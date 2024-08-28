@@ -22,7 +22,18 @@ HEADERS_AZURE = {
 def get_github_issues(repo):
     url = f"{GITHUB_API_URL}/repos/{repo}/issues"
     response = requests.get(url, headers=HEADERS_GITHUB)
-    return response.json()
+    
+    # Debug-Ausgabe: Zeige den Inhalt der API-Antwort
+    print("GitHub API Response:", response.text)
+    
+    # Überprüfe, ob die Antwort im JSON-Format ist
+    try:
+        issues = response.json()
+    except ValueError:
+        print("Error: Die API-Antwort ist kein gültiges JSON.")
+        return []
+
+    return issues
 
 # Funktion zum Erstellen von Issues in Azure DevOps
 def create_azure_devops_issue(title, body):
@@ -45,9 +56,13 @@ def create_azure_devops_issue(title, body):
 def migrate_issues(repo):
     issues = get_github_issues(repo)
     for issue in issues:
-        title = issue['title']
-        body = issue.get('body', '')
-        create_azure_devops_issue(title, body)
+        # Überprüfe, ob 'issue' ein dict ist, bevor du versuchst, auf seine Felder zuzugreifen
+        if isinstance(issue, dict):
+            title = issue['title']
+            body = issue.get('body', '')
+            create_azure_devops_issue(title, body)
+        else:
+            print("Warning: Ein Issue ist kein Dictionary und wird übersprungen:", issue)
 
 if __name__ == "__main__":
     # Hier den Namen deines Repositories und dein Azure DevOps Projekt anpassen
