@@ -50,13 +50,23 @@ def create_azure_devops_issue(title, body):
         }
     ]
     response = requests.post(AZURE_DEVOPS_API_URL, json=data, headers=HEADERS_AZURE)
-    return response.json()
+    
+    # Debugging: Drucke die Rohantwort der API
+    print("Azure DevOps API Response:", response.text)
+    
+    # Versuche, die Antwort als JSON zu parsen
+    try:
+        return response.json()
+    except ValueError:
+        print("Error: Die API-Antwort ist kein gültiges JSON.")
+        print("Status Code:", response.status_code)
+        print("Response Text:", response.text)
+        return None
 
 # Hauptfunktion zur Migration der Issues
 def migrate_issues(repo):
     issues = get_github_issues(repo)
     for issue in issues:
-        # Überprüfe, ob 'issue' ein dict ist, bevor du versuchst, auf seine Felder zuzugreifen
         if isinstance(issue, dict):
             title = issue['title']
             body = issue.get('body', '')
@@ -65,5 +75,4 @@ def migrate_issues(repo):
             print("Warning: Ein Issue ist kein Dictionary und wird übersprungen:", issue)
 
 if __name__ == "__main__":
-    # Hier den Namen deines Repositories und dein Azure DevOps Projekt anpassen
     migrate_issues("vexufx/Test_Git")
