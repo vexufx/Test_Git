@@ -23,7 +23,7 @@ jobs:
 
     - name: Run migration script
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        AZURE_DEVOPS_TOKEN: ${{ secrets.AZURE_DEVOPS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        AZURE_DEVOPS_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT }}
       run: |
         python scripts/migrate_issues.py
