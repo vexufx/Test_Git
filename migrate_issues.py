@@ -1,10 +1,10 @@
 import requests
 
 GITHUB_API_URL = "https://api.github.com"
-AZURE_DEVOPS_API_URL = "https://dev.azure.com/{organization}/_apis/wit/workitems/$Issue?api-version=6.0"
+AZURE_DEVOPS_API_URL = "https://dev.azure.com/QMIB/_apis/wit/workitems/$Issue?api-version=6.0"
 
-GITHUB_TOKEN = "your_github_pat"
-AZURE_DEVOPS_TOKEN = "your_azure_devops_pat"
+GITHUB_TOKEN = "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"
+AZURE_DEVOPS_TOKEN = "pndibg4ad4gkxkhxa2mv6dtr4qzhkf3mnc75uinmtqh3kost22oa"
 
 HEADERS_GITHUB = {
     "Authorization": f"token {GITHUB_TOKEN}"
@@ -43,4 +43,4 @@ def migrate_issues(repo):
         create_azure_devops_issue(title, body)
 
 if __name__ == "__main__":
-    migrate_issues("username/repositoryname")
+    migrate_issues("vexufx/Test_Git")
